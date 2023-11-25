@@ -20,7 +20,21 @@ const sqlConfig = {
   }
 };
 
-
+// const sqlConfig = {
+//       user: 'ndhuy2308_',
+//       password: 'demo123456',
+//       database: 'ndhuy2308_',
+//       server: 'sql.bsite.net\\MSSQL2016',
+//       pool: {
+//         max: 10,
+//         min: 0,
+//         idleTimeoutMillis: 30000
+//       },
+//       options: {
+//         encrypt: true,
+//         trustServerCertificate: true
+//       }
+//     };
 
 const connection = async () => {
   try {
