@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>View List | Full Contract Management - Team 5</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</head>
+
+<body>
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container">
+      <a class="navbar-brand" href="#">Full Contract Management - Team 5 </a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+        aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav">
+          <li class="nav-item">
+            <a class="nav-link active" href="/">View List</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/contracts/add">Add Full Contract</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+  <div class="container mt-3">
+    <h3>View List Full Contract</h3>
+    <div id="message" class="mb-2">
+      <script>
+        function checkMessage() {
+          if (localStorage.getItem("message")) {
+            document.getElementById("message").innerHTML = '<hr><b>' + localStorage.getItem("message") + '</b><hr>';
+            localStorage.removeItem("message");
+          }
+        }
+        checkMessage();
+      </script>
+    </div>
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Customer Name</th>
+          <th>Year of Birth</th>
+          <th>SSN</th>
+          <th>Customer Address</th>
+          <th>Mobile</th>
+          <th>Property ID</th>
+          <th>Date of Contract</th>
+          <th>Price</th>
+          <th>Deposit</th>
+          <th>Remain</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody id="contractsTableBody">
+
+      </tbody>
+    </table>
+    <div id="loadingSpinner" class="mb-2">
+      <div class="spinner-border spinner-border-sm"></div>
+    </div>
+    <a href="/contracts/add" class="btn btn-primary">Add Contract</a>
+  </div>
+
+  <div class="mb-2 mt-2" style="display: flex; justify-content: center;">
+    Copyright by Team 5
+  </div>
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const loadingSpinner = document.getElementById("loadingSpinner");
+      const contractsTableBody = document.getElementById("contractsTableBody");
+
+      fetch('/api')
+        .then(response => response.json())
+        .then(data => {
+          loadingSpinner.style.display = "none";
+
+          let contractsHTML = "";
+          for (let i = 0; i < data.contracts.length; i++) {
+            const contract = data.contracts[i];
+            contractsHTML += `
+              <tr>
+                <td>${contract.Full_Contract_Code}</td>
+                <td>${contract.Customer_Name}</td>
+                <td>${contract.Year_Of_Birth}</td>
+                <td>${contract.SSN}</td>
+                <td>${contract.Customer_Address}</td>
+                <td>${contract.Mobile}</td>
+                <td>${contract.Property_ID}</td>
+                <td>${new Date(contract.Date_Of_Contract).toISOString().split('T')[0]}</td>
+                <td>${contract.Price}</td>
+                <td>${contract.Deposit}</td>
+                <td>${contract.Remain}</td>
+                <td>${contract.Status ? 'Active' : 'Inactive'}</td>
+              </tr>
+            `;
+          }
+
+          contractsTableBody.innerHTML = contractsHTML;
+        })
+        .catch(error => {
+          console.log('Error:', error);
+        });
+    });
+  </script>
+</body>
+
+</html>

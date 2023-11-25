@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Add Full Contract | Full Contract Management - Team 5</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <style>
+        /* CSS styles */
+    </style>
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container">
+            <a class="navbar-brand" href="#">Full Contract Management - Team 5 </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/">View List</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="/contracts/add">Add Full Contract</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <div class="container mt-3">
+        <h3>Add New Contract</h3>
+        <form id="contractForm" action="/contracts/sql" method="post">
+            <div class="row">
+                <div class="col-sm-6">
+                    <div>
+                        <label for="customerName" class="form-label">Customer Name:</label>
+                        <input type="text" class="form-control" id="customerName" name="customerName" required>
+                    </div>
+
+                    <div>
+                        <label for="yearOfBirth" class="form-label">Year of Birth:</label>
+                        <input type="number" class="form-control" id="yearOfBirth" name="yearOfBirth" required>
+                    </div>
+
+                    <div>
+                        <label for="ssn" class="form-label">SSN:</label>
+                        <input type="text" class="form-control" id="ssn" name="ssn" required>
+                    </div>
+
+                    <div>
+                        <label for="customerAddress" class="form-label">Customer Address:</label>
+                        <input type="text" class="form-control" id="customerAddress" name="customerAddress" required>
+                    </div>
+
+                    <div>
+                        <label for="mobile" class="form-label">Mobile:</label>
+                        <input type="text" class="form-control" id="mobile" name="mobile" required>
+                    </div>
+                </div>
+
+                <div class="col-sm-6">
+                    <div>
+                        <label for="propertyID" class="form-label">Property ID:</label>
+                        <input type="number" class="form-control" id="propertyID" name="propertyID" required>
+                    </div>
+
+                    <div>
+                        <label for="dateOfContract" class="form-label">Date of Contract:</label>
+                        <input type="date" class="form-control" id="dateOfContract" name="dateOfContract" required>
+                    </div>
+
+                    <div>
+                        <label for="price" class="form-label">Price:</label>
+                        <input type="number" class="form-control" id="price" name="price" required>
+                    </div>
+
+                    <div>
+                        <label for="deposit" class="form-label">Deposit:</label>
+                        <input type="number" class="form-control" id="deposit" name="deposit" required>
+                    </div>
+
+                    <div>
+                        <label for="remain" class="form-label">Remain:</label>
+                        <input type="number" class="form-control" id="remain" name="remain" required>
+                    </div>
+
+                    <div>
+                        <label for="status" class="form-label">Status:</label>
+                        <select class="form-select" id="status" name="status" required>
+                            <option value="true">Active</option>
+                            <option value="false">Inactive</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="btn btn-primary mt-2" id="submitButton">Add Contract</button>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <script>
+        document.getElementById('contractForm').addEventListener('submit', function (event) {
+            event.preventDefault();
+
+            var customerName = document.getElementById('customerName').value;
+            var yearOfBirth = document.getElementById('yearOfBirth').value;
+            var ssn = document.getElementById('ssn').value;
+            var customerAddress = document.getElementById('customerAddress').value;
+            var mobile = document.getElementById('mobile').value;
+            var propertyID = document.getElementById('propertyID').value;
+            var dateOfContract = document.getElementById('dateOfContract').value;
+            var price = document.getElementById('price').value;
+            var deposit = document.getElementById('deposit').value;
+            var remain = document.getElementById('remain').value;
+            var status = document.getElementById('status').value;
+
+            var data = {
+                customerName: customerName,
+                yearOfBirth: yearOfBirth,
+                ssn: ssn,
+                customerAddress: customerAddress,
+                mobile: mobile,
+                propertyID: propertyID,
+                dateOfContract: dateOfContract,
+                price: price,
+                deposit: deposit,
+                remain: remain,
+                status: status
+            };
+
+            if (customerName && yearOfBirth && ssn && customerAddress && mobile && propertyID &&
+                dateOfContract && price && deposit && remain && status) {
+                document.getElementById("submitButton").innerHTML = 'Adding...';
+                fetch('/contracts/sql', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(data)
+                    })
+                    .then(function (response) {
+                        if (response.ok) {
+                            localStorage.setItem('message', 'Added new full contract successfully.');
+                        } else {
+                            localStorage.setItem('message', 'Failed to add new contract.');
+                        }
+                        window.location.href = '/';
+                    })
+                    .catch(function (error) {
+                        console.log('Error:', error);
+                    });
+            } else {
+                console.log('Please fill all the form.');
+            }
+        });
+    </script>
+    <div class="mb-2 mt-2" style="display: flex; justify-content: center;">
+        Copyright by Team 5
+    </div>
+</body>
+
+</html>
