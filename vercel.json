@@ -1,0 +1,27 @@
+{
+    "version": 2,
+    "builds": [
+      {
+        "src": "app.js",
+        "use": "@vercel/node"
+      }
+    ],
+    "routes": [
+      {
+        "src": "/api",
+        "dest": "app.js"
+      },
+      {
+        "src": "/",
+        "dest": "app.js"
+      },
+      {
+        "src": "/contracts/add",
+        "dest": "app.js"
+      },
+      {
+        "src": "/contracts/sql",
+        "dest": "app.js"
+      }
+    ]
+  }
